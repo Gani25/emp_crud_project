@@ -1,4 +1,4 @@
-package emp_crud_project;
+package com.sprk.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;

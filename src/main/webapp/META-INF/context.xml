@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<context>
+	<Resource name="sprk_emp"
+      type="javax.sql.DataSource" 
+      driverClassName="com.mysql.cj.jdbc.Driver" 
+      url="jdbc:mysql://localhost:3306/sprk_emp_crud" 
+      username="root" 
+      password="root" 
+      
+      maxActive="100" 
+      maxIdle="20" 
+      minIdle="5" 
+      maxWait="10000"/>
+</context>

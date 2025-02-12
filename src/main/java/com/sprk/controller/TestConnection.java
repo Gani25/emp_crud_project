@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import com.sprk.dao.EmployeeDao;
+
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +22,13 @@ public class TestConnection extends HttpServlet {
 
 	@Resource(name = "sprk_emp")
 	private DataSource dataSource;
+	
+	private EmployeeDao employeeDao;
+	
+	@Override
+	public void init() throws ServletException {
+		employeeDao = new EmployeeDao(dataSource);
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +44,7 @@ public class TestConnection extends HttpServlet {
 		out.print("<body>");
 
 		try {
-			conn = dataSource.getConnection();
+			conn = employeeDao.testConnection();
 			if(conn != null)
 			{
 				out.print("<h1>Connection Establish Successfully</h1>");

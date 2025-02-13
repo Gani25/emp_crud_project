@@ -15,7 +15,7 @@
 	
 	<h1 class="mx-auto text-center py-5 w-50">Welcome to SPRK TECH Employee Management System</h1>
 	
-	<form class="row g-5 justify-content-center">
+	<form class="row g-5 justify-content-center" method="post" action="employee">
 	  <div class="col-md-5">
 	    <label for="inputFirstName" class="form-label">First Name</label>
 	    <input type="text" class="form-control" id="inputFirstName" placeholder="John" name="first_name">

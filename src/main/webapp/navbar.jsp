@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,9 +18,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
-        <a class="nav-link" href="add-emp.jsp">Add Employee</a>
-        <a class="nav-link" href="#">Dashboard</a>
+        <a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/index.jsp">Home</a>
+        <a class="nav-link" href="<%=request.getContextPath()%>/add-emp.jsp">Add Employee</a>
+        <a class="nav-link" href="<%=request.getContextPath()%>/employee/dashboard">Dashboard</a>
         </div>
     </div>
   </div>

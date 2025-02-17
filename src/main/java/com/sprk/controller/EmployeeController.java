@@ -73,7 +73,7 @@ public class EmployeeController extends HttpServlet {
 					int result = employeeDao.saveEmployee(employee);
 
 					if (result > 0) {
-						resp.sendRedirect(req.getContextPath() + "/emp_dashboard.jsp");
+						resp.sendRedirect(req.getContextPath() + "/employee/dashboard");
 					} else {
 						System.out.println("Something bad happen");
 					}

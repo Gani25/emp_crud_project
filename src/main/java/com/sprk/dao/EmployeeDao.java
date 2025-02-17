@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -46,22 +48,49 @@ public class EmployeeDao {
 
 		return result;
 	}
-	
+
 	public boolean findByEmail(String email) throws Exception {
-		
+
 		Connection conn = dataSource.getConnection();
-		
+
 		PreparedStatement ps = conn.prepareStatement("Select * from employee where email = ?");
-		
+
 		ps.setString(1, email);
-		
+
+		ResultSet rs = ps.executeQuery();
+
+		boolean result = false;
+		if (rs.next()) {
+			result = true;
+		}
+		closeAll(ps, conn, rs);
+		return result;
+
+	}
+
+	public List<Employee> getAllEmployees() throws Exception {
+		Connection conn = dataSource.getConnection();
+
+		PreparedStatement ps = conn.prepareStatement("Select * from employee");
+
 		ResultSet rs = ps.executeQuery();
 		
-		if(rs.next()) {
-			return true;
+		List<Employee> employees = new LinkedList<>();
+		
+		while(rs.next()) {
+			Employee employee = new Employee();
+			
+			employee.setEmpId(rs.getInt(1));
+			employee.setFirstName(rs.getString(2));
+			employee.setLastName(rs.getString("last_name"));
+			employee.setEmail(rs.getString("email"));
+			employee.setGender(rs.getString("gender"));
+			employee.setAddress(rs.getString("address"));
+			employees.add(employee);
 		}
-		return false;
-	
+		
+		return employees;
+
 	}
 
 	private void closeAll(PreparedStatement ps, Connection conn, ResultSet rs) throws Exception {

@@ -34,23 +34,56 @@ public class EmployeeController extends HttpServlet {
 		String email = req.getParameter("email");
 		String gender = req.getParameter("gender");
 		String address = req.getParameter("address");
+		if (firstName == null || firstName.isBlank()) {
+			req.setAttribute("errorMsg", "First Name Cannot Be Empty");
+			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
+		} else if (lastName == null || lastName.isBlank()) {
 
-		Employee employee = new Employee(0, firstName, lastName, email, gender, address);
+			req.setAttribute("errorMsg", "Last Name Cannot Be Empty");
+			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
+		} else if (email == null || email.isBlank()) {
 
-		// System.out.println(employee);
-		try {
-			int result = employeeDao.saveEmployee(employee);
-			
-			if(result > 0) {
-				resp.sendRedirect(req.getContextPath()+"/emp_dashboard.jsp");
-			}else {
-				System.out.println("Something bad happen");
+			req.setAttribute("errorMsg", "Email Cannot Be Empty");
+			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
+		} else if (address == null || address.isBlank()) {
+
+			req.setAttribute("errorMsg", "Address Cannot Be Empty");
+			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
+		}
+
+		else {
+			boolean res = false;
+			try {
+				res = employeeDao.findByEmail(email);
+
+			} catch (Exception e) {
+				System.out.println(e);
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			
-			System.out.println(e);
+
+			if (res) {
+				// Repeated
+				req.setAttribute("errorMsg", "Email already registered");
+				req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
+
+			} else {
+				Employee employee = new Employee(0, firstName, lastName, email, gender, address);
+
+				// System.out.println(employee);
+				try {
+					int result = employeeDao.saveEmployee(employee);
+
+					if (result > 0) {
+						resp.sendRedirect(req.getContextPath() + "/emp_dashboard.jsp");
+					} else {
+						System.out.println("Something bad happen");
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+
+					System.out.println(e);
+				}
+			}
+
 		}
 	}
-
 }

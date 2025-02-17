@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,14 @@
 
 <div class="container">
 	
-	<h1 class="mx-auto text-center py-5 w-50">Welcome to SPRK TECH Employee Management System</h1>
+	<h1 class="mx-auto text-center my-5 w-50">Welcome to SPRK TECH Employee Management System</h1>
+	<c:set var="errMsg" value="<%=request.getAttribute(\"errorMsg\") %>"/>
+	<c:if test="${not empty errMsg}">
+		<div class="alert alert-danger w-50 text-center mx-auto" role="alert">
+  			${errMsg}
+		</div>
+	</c:if>	
+	
 	
 	<form class="row g-5 justify-content-center" method="post" action="employee">
 	  <div class="col-md-5">
@@ -32,7 +40,7 @@
 	   <div class="col-md-5">
 	    <label for="inputGender" class="form-label">Gender</label>
 	    <select id="inputGender" class="form-select" name="gender">
-	      <option selected value="Choose Gender">Choose Gender...</option>
+	      <option selected value="">Choose Gender...</option>
 	      <option value="Male">Male</option>
 	      <option value="Female">Female</option>
 	      <option value="Others">Others</option>

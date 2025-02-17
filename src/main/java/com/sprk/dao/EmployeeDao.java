@@ -46,6 +46,23 @@ public class EmployeeDao {
 
 		return result;
 	}
+	
+	public boolean findByEmail(String email) throws Exception {
+		
+		Connection conn = dataSource.getConnection();
+		
+		PreparedStatement ps = conn.prepareStatement("Select * from employee where email = ?");
+		
+		ps.setString(1, email);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if(rs.next()) {
+			return true;
+		}
+		return false;
+	
+	}
 
 	private void closeAll(PreparedStatement ps, Connection conn, ResultSet rs) throws Exception {
 		if (ps != null) {

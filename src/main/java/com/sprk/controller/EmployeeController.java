@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/employee")
 public class EmployeeController extends HttpServlet {
@@ -73,6 +74,8 @@ public class EmployeeController extends HttpServlet {
 					int result = employeeDao.saveEmployee(employee);
 
 					if (result > 0) {
+						HttpSession session = req.getSession();
+						session.setAttribute("successMsg", "Employee Saved Successfully");
 						resp.sendRedirect(req.getContextPath() + "/employee/dashboard");
 					} else {
 						System.out.println("Something bad happen");

@@ -49,6 +49,30 @@ public class EmployeeDao {
 		return result;
 	}
 
+	public Employee findByEmpId(int empId) throws Exception {
+
+		Connection conn = dataSource.getConnection();
+
+		PreparedStatement ps = conn.prepareStatement("Select * from employee where emp_id = ?");
+
+		ps.setInt(1, empId);
+
+		ResultSet rs = ps.executeQuery();
+
+		Employee employee = new Employee();
+		if (rs.next()) {
+			employee.setEmpId(rs.getInt(1));
+			employee.setFirstName(rs.getString(2));
+			employee.setLastName(rs.getString("last_name"));
+			employee.setEmail(rs.getString("email"));
+			employee.setGender(rs.getString("gender"));
+			employee.setAddress(rs.getString("address"));
+		}
+		closeAll(ps, conn, rs);
+		return employee;
+
+	}
+
 	public boolean findByEmail(String email) throws Exception {
 
 		Connection conn = dataSource.getConnection();
@@ -74,12 +98,12 @@ public class EmployeeDao {
 		PreparedStatement ps = conn.prepareStatement("Select * from employee");
 
 		ResultSet rs = ps.executeQuery();
-		
+
 		List<Employee> employees = new LinkedList<>();
-		
-		while(rs.next()) {
+
+		while (rs.next()) {
 			Employee employee = new Employee();
-			
+
 			employee.setEmpId(rs.getInt(1));
 			employee.setFirstName(rs.getString(2));
 			employee.setLastName(rs.getString("last_name"));
@@ -88,7 +112,7 @@ public class EmployeeDao {
 			employee.setAddress(rs.getString("address"));
 			employees.add(employee);
 		}
-		
+
 		return employees;
 
 	}
@@ -103,6 +127,20 @@ public class EmployeeDao {
 		if (conn != null) {
 			conn.close();
 		}
+	}
+
+	public void deleteEmployeeById(int empId) throws Exception {
+
+		Connection conn = dataSource.getConnection();
+
+		String sql = "delete from employee where emp_id = ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+
+		ps.setInt(1, empId);
+		ps.executeUpdate();
+
+		closeAll(ps, conn, null);
+
 	}
 
 }

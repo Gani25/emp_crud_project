@@ -14,14 +14,32 @@
 
 <div class="container">
 
+
+
 <c:set var="employees" value="<%=request.getAttribute(\"employees\") %>"/>
 
 	
 	<h1 class="mx-auto text-center py-5 w-50">Welcome to SPRK TECH Employee Management System</h1>
 	
 	
+	<c:set var="successMsg" value="<%=session.getAttribute(\"successMsg\") %>"/>
+	<c:if test="${not empty successMsg}">
+		<div class="alert alert-success w-50 text-center mx-auto mb-5" role="alert">
+  			${successMsg}
+		</div>
+		<c:remove var="successMsg"/>
+	</c:if>	
 	
-	<table class="table table-bordered w-75 mx-auto">
+	<c:set var="errMsg" value="<%=session.getAttribute(\"errMsg\") %>"/>
+	<c:if test="${not empty errMsg}">
+		<div class="alert alert-danger w-50 text-center mx-auto mb-5" role="alert">
+  			${errMsg}
+		</div>
+		<c:remove var="errMsg"/>
+	</c:if>	
+	
+	
+	<table class="table table-bordered w-100 mx-auto">
 	
 		<tr class="table-dark">
 			<th>Emp Id</th>
@@ -30,6 +48,7 @@
 			<th>Email</th>
 			<th>Gender</th>
 			<th>Address</th>
+			<th>Action</th>
 		</tr>
 		
 		<c:forEach var="tempEmp" items="${employees}">
@@ -40,6 +59,17 @@
 				<td>${tempEmp.email }</td>
 				<td>${tempEmp.gender }</td>
 				<td>${tempEmp.address}</td>
+				<td>
+					<!-- Links -->
+						<c:url var="updateLink" value="/employee/update">
+						<c:param name="empId" value="${tempEmp.empId}"></c:param>
+					</c:url>
+					<a class="btn btn-sm btn-outline-dark" href="${updateLink}">Update</a> | 
+					<c:url var="deleteLink" value="/employee/delete">
+						<c:param name="empId" value="${tempEmp.empId}"></c:param>
+					</c:url>
+					<a class="btn btn-sm btn-outline-danger" href="${deleteLink}">Delete</a>
+				</td>
 			</tr>
 		
 		</c:forEach>

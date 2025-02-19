@@ -1,6 +1,8 @@
 package com.sprk.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -35,23 +37,40 @@ public class EmployeeController extends HttpServlet {
 		String email = req.getParameter("email");
 		String gender = req.getParameter("gender");
 		String address = req.getParameter("address");
+		
+		Employee employee = new Employee(0, firstName, lastName, email, gender, address);
+		int errorCount = 0;
+		Map<String, String> errorMessages = new HashMap<>();
+		
 		if (firstName == null || firstName.isBlank()) {
-			req.setAttribute("errorMsg", "First Name Cannot Be Empty");
-			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
-		} else if (lastName == null || lastName.isBlank()) {
+			
+			errorCount++;
+			errorMessages.put("firstName", "First Name Cannot Be Empty");
+		} 
+		if (lastName == null || lastName.isBlank()) {
 
-			req.setAttribute("errorMsg", "Last Name Cannot Be Empty");
-			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
-		} else if (email == null || email.isBlank()) {
-
-			req.setAttribute("errorMsg", "Email Cannot Be Empty");
-			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
-		} else if (address == null || address.isBlank()) {
-
-			req.setAttribute("errorMsg", "Address Cannot Be Empty");
+			errorCount++;
+			errorMessages.put("lastName", "Last Name Cannot Be Empty");
+		
+		
+		} 
+		if (email == null || email.isBlank()) {
+			errorCount++;
+			errorMessages.put("email", "Email Cannot Be Empty");
+		} 
+		if (address == null || address.isBlank()) {
+			
+			errorCount++;
+			errorMessages.put("address", "Address Cannot Be Empty");
+		
+		}
+		
+		if(errorCount > 0)
+		{
+			req.setAttribute("errorMessages", errorMessages);
+			req.setAttribute("employee", employee);
 			req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
 		}
-
 		else {
 			boolean res = false;
 			try {
@@ -67,8 +86,7 @@ public class EmployeeController extends HttpServlet {
 				req.getRequestDispatcher("add-emp.jsp").forward(req, resp);
 
 			} else {
-				Employee employee = new Employee(0, firstName, lastName, email, gender, address);
-
+				
 				// System.out.println(employee);
 				try {
 					int result = employeeDao.saveEmployee(employee);

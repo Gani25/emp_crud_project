@@ -143,4 +143,25 @@ public class EmployeeDao {
 
 	}
 
+	public int updateEmployee(Employee employee) throws Exception {
+		Connection conn = dataSource.getConnection();
+
+		String sql = "update employee set first_name = ?, last_name = ?, email = ?, gender = ?, address = ? where emp_id = ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+
+		ps.setString(1, employee.getFirstName());
+		ps.setString(2, employee.getLastName());
+		ps.setString(3, employee.getEmail());
+		ps.setString(4, employee.getGender());
+		ps.setString(5, employee.getAddress());
+		ps.setInt(6, employee.getEmpId());
+
+		int result = ps.executeUpdate();
+
+		closeAll(ps, conn, null);
+
+		return result;
+	
+	}
+
 }
